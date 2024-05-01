@@ -1,10 +1,23 @@
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import React from 'react'
 import { PAGE_MAP } from '@/utils/pageMap'
 import Slider from '@/components/Slider'
 
-const Layout = async ({ children, params }) => {
+const pageController = async ({ params }) => {
     const { category, slug } = params
+
+    if (!PAGE_MAP[category] || !PAGE_MAP[category].subPages[slug]) {
+        notFound()
+    }
+
+}
+
+const Layout = async ({ children, params }) => {
+    await pageController({ params })
+
+    const { category, slug } = params
+
     return (
         <div className='container bg-white h-100'>
             <div>
